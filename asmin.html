@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة التحكم | Eleven Academy</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+.atab{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--muted);border-radius:12px;padding:9px 18px;font-family:inherit;font-weight:800;cursor:pointer}
+.atab.on{background:var(--green);color:#04120a;border-color:transparent}
+.panel{display:none}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="brand"><img class="site-logo" id="logoPreview" src="" alt="logo"><span>Eleven <em>Admin</em></span></a>
+    <div style="margin-inline-start:auto;display:flex;gap:8px">
+      <a href="index.html" class="btn btn-ghost btn-sm">🌐 عرض الموقع</a>
+      <button class="btn btn-red btn-sm" onclick="adminLogout()">خروج</button>
+    </div>
+  </div>
+</header>
+
+<div class="container" style="padding-top:26px">
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px">
+    <button class="atab on" data-tab="news" onclick="showTab('news')">📰 الأخبار</button>
+    <button class="atab" data-tab="matches" onclick="showTab('matches')">⚽ المباريات</button>
+    <button class="atab" data-tab="players" onclick="showTab('players')">👕 اللاعبون</button>
+    <button class="atab" data-tab="settings" onclick="showTab('settings')">⚙️ الإعدادات</button>
+  </div>
+
+  <!-- NEWS -->
+  <div class="panel" id="p-news">
+    <div class="match-card" style="max-width:640px">
+      <h3 style="margin-bottom:14px">نشر خبر جديد 📰</h3>
+      <form onsubmit="addNews(event)">
+        <div class="field"><label>عنوان الخبر</label><input id="nTitle" required></div>
+        <div class="field"><label>نص الخبر</label><textarea id="nContent" required></textarea></div>
+        <div class="field"><label>صورة الخبر (اختياري)</label><input type="file" id="nImg" accept="image/*"></div>
+        <button class="btn btn-green">نشر الخبر</button>
+      </form>
+    </div>
+    <div class="sec-title" style="margin-top:26px"><h2>الأخبار المنشورة</h2><div class="line"></div></div>
+    <div id="adminNewsList"></div>
+  </div>
+
+  <!-- MATCHES -->
+  <div class="panel" id="p-matches">
+    <div class="match-card" style="max-width:640px">
+      <h3 style="margin-bottom:14px">إضافة مباراة جديدة ⚽</h3>
+      <form onsubmit="addMatch(event)">
+        <div class="field"><label>اسم الفريق المنافس</label><input id="mOpp" required></div>
+        <div class="field"><label>صورة الفريق المنافس (اختياري)</label><input type="file" id="mOppImg" accept="image/*"></div>
+        <div class="field"><label>تاريخ ووقت المباراة</label><input type="datetime-local" id="mDate" required></div>
+        <div class="field"><label>ملعب المباراة (اختياري)</label><input id="mStadium" placeholder="مثال: ملعب النادي الأهلي — القاهرة"></div>
+        <div class="field"><label>حالة المباراة</label>
+          <select id="mStatus">
+            <option value="up">قادمة</option>
+            <option value="live">مباشر الآن</option>
+            <option value="fin">انتهت</option>
+          </select>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="field"><label>أهداف إيليفن</label><input type="number" id="mScoreOur" min="0" value="0"></div>
+          <div class="field"><label>أهداف المنافس</label><input type="number" id="mScoreOpp" min="0" value="0"></div>
+        </div>
+        <div class="sec-title"><h2 style="font-size:1.05rem">📋 تشكيلة المباراة</h2><div class="line"></div></div>
+        <div id="lineupRows"></div>
+        <button type="button" class="btn btn-ghost btn-sm" style="margin:10px 0" onclick="addLineupRow()">➕ إضافة لاعب للتشكيلة</button>
+        <br><button class="btn btn-green">حفظ المباراة</button>
+      </form>
+    </div>
+    <div class="sec-title" style="margin-top:26px"><h2>المباريات المسجلة</h2><div class="line"></div></div>
+    <div id="adminMatchesList"></div>
+  </div>
+
+  <!-- PLAYERS -->
+  <div class="panel" id="p-players">
+    <div class="match-card" style="max-width:640px">
+      <h3 style="margin-bottom:14px">إضافة لاعب للفريق 👕</h3>
+      <form onsubmit="addPlayer(event)">
+        <div class="field"><label>اسم اللاعب</label><input id="plName" required></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="field"><label>رقم القميص</label><input type="number" id="plNum" min="0"></div>
+          <div class="field"><label>المركز</label><input id="plPos" placeholder="حارس / مدافع / وسط / مهاجم"></div>
+        </div>
+        <div class="field"><label>صورة اللاعب (اختياري)</label><input type="file" id="plImg" accept="image/*"></div>
+        <button class="btn btn-green">إضافة اللاعب</button>
+      </form>
+    </div>
+    <div class="sec-title" style="margin-top:26px"><h2>لاعبو الأكاديمية</h2><div class="line"></div></div>
+    <div id="adminPlayersList"></div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="panel" id="p-settings">
+    <div class="match-card" style="max-width:480px">
+      <h3 style="margin-bottom:14px">شعار الأكاديمية ⚙️</h3>
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
+        <img id="logoPreview2" src="" style="width:90px;height:90px;border-radius:20px;object-fit:cover;border:2px solid #ffffff22">
+        <p style="color:var(--muted);font-size:.85rem">يظهر الشعار في الموقع وفي بطاقات المباريات بدلاً من شعار الفريق المنافس لإيليفن.</p>
+      </div>
+      <div class="field"><input type="file" id="logoFile" accept="image/*"></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-green" onclick="saveLogoSetting()">حفظ الشعار</button>
+        <button class="btn btn-red" onclick="removeLogo()">إزالة الشعار</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/store.js"></script>
+<script>
+// reuse logo preview for settings tab
+const _origRender = renderLogoPreview;
+renderLogoPreview = function(){ _origRender(); const p2=document.getElementById('logoPreview2'); if(p2) p2.src = getLogo() || defaultLogo(); };
+</script>
+<script src="js/admin.js"></script>
+</body>
+</html>
