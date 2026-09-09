@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eleven Academy | أكاديمية إيليفن</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="#" class="brand"><img class="site-logo" src="" alt="logo"><span>Eleven <em>Academy</em></span></a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#home" class="active">الرئيسية</a>
+      <a href="#news">الأخبار</a>
+      <a href="#matches">المباريات</a>
+      <a href="#players">اللاعبون</a>
+    </nav>
+    <button class="burger" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
+    <div id="authArea" style="display:flex;align-items:center;gap:8px"></div>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero" id="home">
+  <div class="container">
+    <img class="hero-logo site-logo" src="" alt="شعار الأكاديمية">
+    <div class="badge">⚽ أكاديمية كرة قدم</div>
+    <h1>أهلاً بك في <span class="g">إيليفن</span><br>حيث تُصنع المواهب</h1>
+    <p>تابع آخر أخبار الأكاديمية، جدول المباريات، تشكيلات الفرق، وكل ما يخص عالم إيليفن في مكان واحد.</p>
+    <div id="heroMatch"></div>
+  </div>
+</section>
+
+<!-- News -->
+<section id="news">
+  <div class="container">
+    <div class="sec-title"><h2>📰 أخبار الأكاديمية</h2><div class="line"></div></div>
+    <div class="news-grid" id="newsGrid"></div>
+  </div>
+</section>
+
+<!-- Matches -->
+<section id="matches">
+  <div class="container">
+    <div class="sec-title"><h2>📅 جدول المباريات</h2><div class="line"></div></div>
+    <div id="matchesList"></div>
+  </div>
+</section>
+
+<!-- Players -->
+<section id="players">
+  <div class="container">
+    <div class="sec-title"><h2>👕 تشكيلة الفريق</h2><div class="line"></div></div>
+    <div class="players-grid" id="playersGrid"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">جميع الحقوق محفوظة © أكاديمية إيليفن — Eleven Academy</div>
+</footer>
+
+<!-- Auth Modal -->
+<div class="modal-bg" id="authModal" onclick="if(event.target===this)closeAuth()">
+  <div class="modal">
+    <h3>حسابك في إيليفن ⚽</h3>
+    <p class="sub">سجّل دخولك أو أنشئ حساباً جديداً لمتابعة الأكاديمية</p>
+    <div class="tabs">
+      <button class="on" data-tab="login" onclick="switchTab('login')">تسجيل الدخول</button>
+      <button data-tab="signup" onclick="switchTab('signup')">إنشاء حساب</button>
+    </div>
+    <div id="authMsg" class="msg"></div>
+    <form id="loginForm" onsubmit="doLogin(event)">
+      <div class="field"><label>البريد الإلكتروني</label><input type="email" id="liEmail" required></div>
+      <div class="field"><label>كلمة المرور</label><input type="password" id="liPass" required></div>
+      <button class="btn btn-green" style="width:100%">دخول</button>
+    </form>
+    <form id="signupForm" style="display:none" onsubmit="doSignup(event)">
+      <div class="field"><label>الاسم الكامل</label><input type="text" id="suName" required></div>
+      <div class="field"><label>البريد الإلكتروني</label><input type="email" id="suEmail" required></div>
+      <div class="field"><label>كلمة المرور</label><input type="password" id="suPass" required minlength="6"></div>
+      <button class="btn btn-green" style="width:100%">إنشاء الحساب</button>
+    </form>
+  </div>
+</div>
+
+<script src="js/store.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
